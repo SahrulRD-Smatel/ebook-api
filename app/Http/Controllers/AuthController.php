@@ -12,7 +12,7 @@ class AuthController extends Controller
             'siswa' => [
                 'nis' => '3103119171',
                 'name' => 'Sahrul Ramadhani',
-                'phone' => '+6282294002934',
+                'phone' => '+62 82294002934',
                 'class' => 'XIIRPL5'
             ]
         ];
