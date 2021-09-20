@@ -6,14 +6,16 @@ use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function index()
     {
-        //
+        return [
+            'siswa' => [
+                'nis' => '3103119171',
+                'name' => 'Sahrul Ramadhani',
+                'phone' => '+6282294002934',
+                'class' => 'XIIRPL5'
+            ]
+        ];
     }
 
     /**
