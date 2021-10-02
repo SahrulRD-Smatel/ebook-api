@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Author;
 use Illuminate\Http\Request;
+use App\Models\Author;
 
 class AuthorController extends Controller
 {
@@ -14,11 +14,7 @@ class AuthorController extends Controller
      */
     public function index()
     {
-        $author = Author::all();
-        return response()->json([
-            'status' => 200,
-            'data' => $author
-        ], 200);
+        return Author::get();
     }
 
     /**
@@ -39,19 +35,14 @@ class AuthorController extends Controller
      */
     public function store(Request $request)
     {
-        $author = new Author();
-        $author->name = $request->input('name');
-        $author->date_of_birth = $request->input('date_of_birth');
-        $author->place_of_birth = $request->input('place_of_birth');
-        $author->gender = $request->input('gender');
-        $author->email = $request->input('email');
-        $author->hp = $request->input('hp');
-        $author->save();
-
-        return response()->json([
-            'status' => 201,
-            'data' => $author
-        ], 201);
+        return Author::create([//
+            'name' => $request->name,
+            'date_of_birth' => $request->date_of_birth,
+            'place_of_birth' => $request->place_of_birth,
+            'gender' => $request->gender,
+            'email' => $request->email,
+            'hp' => $request->hp
+        ]);
     }
 
     /**
@@ -62,18 +53,21 @@ class AuthorController extends Controller
      */
     public function show($id)
     {
-        $author = Author::find($id);
+        $data = Author::find($id);
+        if($data){
 
-        if($author){
-            return response()->json([
-                'status' => 200,
-                'data' => $author
-            ], 200);
+            return [
+                "status" => "200",
+                "message" => "Show Data Detail Success",
+                "data" => $data
+            ];
+
         }else{
-            return response()->json([
-                'status' => 404,
-                'message' => 'Gagal menampilkan data, karena id ' . $id . ' tidak dapat ditemukan. Pastikan id dengan benar:)'
-            ], 404);
+
+            return [
+                "status" => "404",
+                "message" => "Data Not Found",
+            ];
         }
     }
 
@@ -97,26 +91,15 @@ class AuthorController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $author = Author::find($id);
-        if($author){
-            $author->name = $request->name ? $request->name : $author->name;
-            $author->date_of_birth = $request->date_of_birth ? $request->date_of_birth : $author->date_of_birth;
-            $author->place_of_birth = $request->place_of_birth ? $request->place_of_birth : $author->place_of_birth;
-            $author->gender = $request->gender ? $request->gender : $author->gender;
-            $author->email = $request->email ? $request->email : $author->email;
-            $author->hp = $request->hp ? $request->hp : $author->hp;
-            $author->save();
-
-            return response()->json([
-                'status' => 200,
-                'data' => $author
-            ], 200);
-        }else{
-            return response()->json([
-                'status' => 404,
-                'message' => 'Gagal update data, karena id ' . $id . ' tidak ditemukan. Pastikan id dengan benar:)'
-            ], 404);
-        }
+        Author::find($id)->update([
+            'name' => $request->name,
+            'date_of_birth' => $request->date_of_birth,
+            'place_of_birth' => $request->place_of_birth,
+            'gender' => $request->gender,
+            'email' => $request->email,
+            'hp' => $request->hp
+        ]);
+        return "Update Data Success";
     }
 
     /**
@@ -127,18 +110,7 @@ class AuthorController extends Controller
      */
     public function destroy($id)
     {
-        $author = Author::where("id", $id)->first();
-        if($author){
-            $author->delete();
-            return response()->json([
-                'status' => 200,
-                'data' => $author
-            ], 200);
-        }else{
-            return response()->json([
-                'status' => 404,
-                'message' => 'Gagal menghapus data, karena id ' . $id . ' tidak ditemukan. Pastikan id dengan benar:)'
-            ], 404);
-        }
+        Author::find($id)->delete();
+        return "Delete Data Success";
     }
 }
